@@ -6,22 +6,22 @@ import java.awt.Rectangle;
 
 public class PlayerPaddle {
 
-	int x;
-	int y;
-	int largura = 20;
-	int altura = 50;
-	int speed = 2;
-	int speedReset=0;
-	int handcap = 2;
+	private int x;
+	private int y;
+	private int largura = 20;
+	private int altura = 50;
+	private int speed = 2;
+	private int speedReset=0;
+	private int handcap = 2;
 
-	double veloAcr=0.3; 		//valor de acrescimo
-	double speed2 = speed;
-	double veloMax = 4;
+	private double veloAcr=0.3; 		
+	private double speed2 = speed;
+	private double veloMax = 4;
 
-	Rectangle boundingBox;
+	private Rectangle boundingBox;
 
-	boolean goingUp = false;
-	boolean goingDown = false;
+	private boolean goingUp = false;
+	private boolean goingDown = false;
 
 	public PlayerPaddle(int x, int y) {
 		this.x = x;
@@ -52,7 +52,6 @@ public class PlayerPaddle {
 			speed=(int)speed2;
 		}
 		else{
-			speed=speedReset;
 			speed=speedReset;
 		}
 
@@ -105,6 +104,68 @@ public class PlayerPaddle {
 		this.veloMax = veloMax;
 	}
 
+	public int getX() {
+		return x;
+	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getLargura() {
+		return largura;
+	}
+
+	public void setLargura(int largura) {
+		this.largura = largura;
+	}
+
+	public int getAltura() {
+		return altura;
+	}
+
+	public void setAltura(int altura) {
+		this.altura = altura;
+	}
+
+	public int getSpeedReset() {
+		return speedReset;
+	}
+
+	public void setSpeedReset(int speedReset) {
+		this.speedReset = speedReset;
+	}
+
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
+
+	public void setBoundingBox(Rectangle boundingBox) {
+		this.boundingBox = boundingBox;
+	}
+
+	public boolean isGoingUp() {
+		return goingUp;
+	}
+
+	public void setGoingUp(boolean goingUp) {
+		this.goingUp = goingUp;
+	}
+
+	public boolean isGoingDown() {
+		return goingDown;
+	}
+
+	public void setGoingDown(boolean goingDown) {
+		this.goingDown = goingDown;
+	}
 
 }

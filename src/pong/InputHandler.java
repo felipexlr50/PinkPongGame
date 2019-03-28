@@ -19,24 +19,24 @@ public class InputHandler implements KeyListener  {
 		//player 1
 		if(keyCode == KeyEvent.VK_W){
 
-			Game.player.goingUp = true;
+			game.player.setGoingUp(true);
 			
 		}
 
 		if(keyCode == KeyEvent.VK_S){
 
-			Game.player.goingDown = true;
+			game.player.setGoingDown(true);
 		}
 		
 		//player 2
 		if(keyCode == KeyEvent.VK_UP){
 
-			Game.ai.goingUp = true;
+			game.ai.setGoingUp(true);
 		}
 
 		if(keyCode == KeyEvent.VK_DOWN){
 
-			Game.ai.goingDown = true;
+			game.ai.setGoingDown(true);
 		}
 		
 		//other controls
@@ -47,15 +47,8 @@ public class InputHandler implements KeyListener  {
 			game.frame.dispose();
 			game.image.flush();
 			
-			
-			MainMenu menu = new MainMenu();
+			new MainMenu();
 		}
-		
-	
-		
-		
-		
-
 	}
 
 	@Override
@@ -65,32 +58,32 @@ public class InputHandler implements KeyListener  {
 		//player 1
 		if(keyCode == KeyEvent.VK_W){
 
-			Game.player.goingUp = false;
+			game.player.setGoingUp(false);
 		}
 
 		if(keyCode == KeyEvent.VK_S){
 
-			Game.player.goingDown = false;
+			game.player.setGoingDown(false);
 		}
 		
 		
 		//player 2
 		if(keyCode == KeyEvent.VK_UP){
 
-			Game.ai.goingUp = false;
+			game.ai.setGoingUp(false);
 		}
 
 		if(keyCode == KeyEvent.VK_DOWN){
 
-			Game.ai.goingDown = false;
+			game.ai.setGoingDown(false);
 		}
 
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-
-
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

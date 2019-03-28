@@ -31,11 +31,11 @@ public class Game extends Canvas implements Runnable {
 	
 	String ganhador;
 	
-	public static PlayerPaddle player;
-	public static AIPaddle ai;
-	public static Ball ball;
+	public PlayerPaddle player;
+	public AIPaddle ai;
+	public Ball ball;
 
-	DifficultChanger dificuldade;
+
 
 	JFrame frame;
 	public final int LARGURA = 1200;
@@ -86,7 +86,7 @@ public class Game extends Canvas implements Runnable {
 		this.frame.dispose();
 		this.image.flush();
 		//System.exit(0);
-		MainMenu menu = new MainMenu();
+		new MainMenu();
 	}
 
 	public Game() {
@@ -104,9 +104,6 @@ public class Game extends Canvas implements Runnable {
 		frame.setResizable(false);
 		frame.setTitle(TITTLE);
 
-
-
-
 		player = new PlayerPaddle(10,getHeight()/2 -40);
 		ai = new AIPaddle(getWidth()-25, getHeight()/2 -40);
 		ball = new Ball(getWidth()/2, getHeight()/2 -40);
@@ -115,8 +112,6 @@ public class Game extends Canvas implements Runnable {
 		frame.addKeyListener(IH);
 		music.loopSom();
 
-		
-
 	}
 
 	public void tick() throws Throwable{
@@ -124,7 +119,7 @@ public class Game extends Canvas implements Runnable {
 		player.tick(this);
 		ai.tick(this);
 		ball.tick(this);
-		dificuldade = new DifficultChanger();
+		new DifficultChanger(player, ai, ball);
 		endGame();
 	}
 
@@ -165,8 +160,6 @@ public class Game extends Canvas implements Runnable {
 			bs.contentsRestored();
 
 		}
-
-
 
 		player.render(g);
 		ai.render(g);
@@ -222,12 +215,4 @@ public class Game extends Canvas implements Runnable {
 	public void setGameRunning(boolean gameRunning) {
 		this.gameRunning = gameRunning;
 	}
-	
-	
-	
-
-	
-
-
-
 }

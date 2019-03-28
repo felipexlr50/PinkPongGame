@@ -7,18 +7,18 @@ import java.util.Random;
 
 public class Ball {
 
-	int x, y;
-	int size = 10;
-	int speed = 2;
-	double ballVeloAcr=0.3; 		//valor de acrescimo da velocidade da bola
-	double speed2 = 2;
-	double veloMax = 5;
-	Game game;
-	int vx, vy;
+	private int x, y;
+	private int size = 10;
+	private int speed = 2;
+	private double ballVeloAcr=0.3;
+	private double speed2 = 2;
+	private double veloMax = 5;
+	private int vx;
+	private int vy;
 
-	int ballFlag=0;
+	private int ballFlag=0;
 
-	Rectangle boundingBox;
+	private Rectangle boundingBox;
 
 	public Ball(int x, int y) {
 		this.x = x;
@@ -29,16 +29,12 @@ public class Ball {
 
 		boundingBox = new Rectangle(x, y, size, size);
 		boundingBox.setBounds(x, y, size, size);
-
-
 	}
 
 	public void tick(Game game){
 		boundingBox.setBounds(x, y, size, size);
 		
-		this.game = game;
-		
-		if(Game.ai.isTwoPlayer()){
+		if(game.ai.isTwoPlayer()){
 			ballVeloAcr=0;
 		}
 
@@ -86,28 +82,25 @@ public class Ball {
 
 		paddleCollide(game);
 
-
 	}
 
 	private void paddleCollide(Game game){
 
 
-		if(boundingBox.intersects(game.player.boundingBox)){
+		if(boundingBox.intersects(game.player.getBoundingBox())){
 			BallVeloAcr();
-			aiBug();
+			aiBug(game);
 			vx = speed;
 
 		}
-		else if(boundingBox.intersects(game.ai.boundingBox)){
+		else if(boundingBox.intersects(game.ai.getBoundingBox())){
 			BallVeloAcr();
-			aiBug();
+			aiBug(game);
 			vx = -speed;
 		}
 	}
 
 	public void render(Graphics g){
-		//		g.setColor(Color.white);
-		//		g.fillRect(x, y, size, size);
 
 		if(ballFlag==1){
 			g.setColor(Color.cyan);
@@ -122,7 +115,6 @@ public class Ball {
 			g.fillRect(x, y, size, size);
 		}
 
-
 	}
 
 	private void BallVeloAcr(){
@@ -130,9 +122,9 @@ public class Ball {
 		speed=(int)speed2;
 	}
 	
-	public void aiBug(){
+	public void aiBug(Game game){
 		Random aibug = new Random();
-		AIPaddle.bug = game.getWidth()/2 - aibug.nextInt(200);
+		game.ai.setBug(game.getWidth()/2 - aibug.nextInt(200));
 	}
 
 	public int getSpeed() {
@@ -167,7 +159,60 @@ public class Ball {
 		this.veloMax = veloMax;
 	}
 
+	public int getX() {
+		return x;
+	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
 
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public int getVx() {
+		return vx;
+	}
+
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
+
+	public int getVy() {
+		return vy;
+	}
+
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
+
+	public int getBallFlag() {
+		return ballFlag;
+	}
+
+	public void setBallFlag(int ballFlag) {
+		this.ballFlag = ballFlag;
+	}
+
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
+
+	public void setBoundingBox(Rectangle boundingBox) {
+		this.boundingBox = boundingBox;
+	}
 
 }

@@ -3,29 +3,28 @@ package pong;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Random;
 
 public class AIPaddle {
 
-	int x;
-	int y;
-	int largura = 20;
-	int altura = 50;
-	int speed = 2;
-	public static int bug;
-	int speedReset=0;
-	int handcap=2;
+	private int x;
+	private int y;
+	private int largura = 20;
+	private int altura = 50;
+	private int speed = 2;
+	private int bug;
+	private int speedReset=0;
+	private int handcap=2;
 	
 
-	double veloAcr=0.3; 		//valor de acrescimo
-	double speed2 = 2;
-	double veloMax = 4;
+	private double veloAcr=0.3; 		
+	private double speed2 = 2;
+	private double veloMax = 4;
 
-	Rectangle boundingBox;
+	private Rectangle boundingBox;
 	
 
-	boolean goingUp = false;
-	boolean goingDown = false;
+	private boolean goingUp = false;
+	private boolean goingDown = false;
 	private boolean isTwoPlayer = false;
 	
 
@@ -35,16 +34,12 @@ public class AIPaddle {
 		this.x = x;
 		this.y = y;
 		
-
 		boundingBox = new Rectangle(x, y, largura, altura);
 		boundingBox.setBounds(x, y, largura, altura);
 		speedReset = speed;
-
 	}
 
 	public void tick(Game game){
-		
-		
 		
 		boundingBox.setBounds(x, y, largura, altura);
 
@@ -64,13 +59,13 @@ public class AIPaddle {
 		if(!isTwoPlayer()){	
 			speed =speed+1;
 			//Ai settings
-			if(game.ball.x>bug){
+			if(game.ball.getX()>bug){
 
-				if(game.ball.y < y + altura && y > 0){
+				if(game.ball.getY() < y + altura && y > 0){
 					y-=speed;
 				}
 
-				else if(game.ball.y > y  && y + altura < game.getHeight()){
+				else if(game.ball.getY() > y  && y + altura < game.getHeight()){
 					y+=speed;
 				}
 				
@@ -94,8 +89,6 @@ public class AIPaddle {
 			setVeloMax(3);
 
 		}
-
-		//System.out.println(speed+" --- "+speed2);
 
 	}
 
@@ -159,8 +152,69 @@ public class AIPaddle {
 	public void setBug(int bug) {
 		this.bug = bug;
 	}
-	
-	
 
+	public int getX() {
+		return x;
+	}
 
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getLargura() {
+		return largura;
+	}
+
+	public void setLargura(int largura) {
+		this.largura = largura;
+	}
+
+	public int getAltura() {
+		return altura;
+	}
+
+	public void setAltura(int altura) {
+		this.altura = altura;
+	}
+
+	public int getSpeedReset() {
+		return speedReset;
+	}
+
+	public void setSpeedReset(int speedReset) {
+		this.speedReset = speedReset;
+	}
+
+	public Rectangle getBoundingBox() {
+		return boundingBox;
+	}
+
+	public void setBoundingBox(Rectangle boundingBox) {
+		this.boundingBox = boundingBox;
+	}
+
+	public boolean isGoingUp() {
+		return goingUp;
+	}
+
+	public void setGoingUp(boolean goingUp) {
+		this.goingUp = goingUp;
+	}
+
+	public boolean isGoingDown() {
+		return goingDown;
+	}
+
+	public void setGoingDown(boolean goingDown) {
+		this.goingDown = goingDown;
+	}
+	
 }
