@@ -7,212 +7,212 @@ import java.util.Random;
 
 public class Ball {
 
-	private int x, y;
-	private int size = 10;
-	private int speed = 2;
-	private double ballVeloAcr=0.3;
-	private double speed2 = 2;
-	private double veloMax = 5;
-	private int vx;
-	private int vy;
+    private int x, y;
+    private int size = 10;
+    private int speed = 2;
+    private double ballVeloAcr = 0.3;
+    private double speed2 = 2;
+    private double veloMax = 5;
+    private int vx;
+    private int vy;
 
-	private int ballFlag=0;
+    private int ballFlag = 0;
 
-	private Rectangle boundingBox;
+    private Rectangle boundingBox;
 
-	public Ball(int x, int y) {
-		this.x = x;
-		this.y = y;
+    public Ball(int x, int y) {
+        this.x = x;
+        this.y = y;
 
-		vx = speed;
-		vy = speed;
+        vx = speed;
+        vy = speed;
 
-		boundingBox = new Rectangle(x, y, size, size);
-		boundingBox.setBounds(x, y, size, size);
-	}
+        boundingBox = new Rectangle(x, y, size, size);
+        boundingBox.setBounds(x, y, size, size);
+    }
 
-	public void tick(Game game){
-		boundingBox.setBounds(x, y, size, size);
-		
-		if(game.ai.isTwoPlayer()){
-			ballVeloAcr=0;
-		}
+    public void tick(Game game, Double deltaTime) {
+        boundingBox.setBounds(x, y, size, size);
 
-		if(speed2>veloMax){
-			speed2=veloMax;
-		}
+        double auxVelMax = veloMax * deltaTime;
 
-		if(x <= 0){
-			game.p1Score--;
-			//BallVeloAcr();
-			vx = speed;
-		}
-		else if(x + size >= game.getWidth()){
+        if (game.ai.isTwoPlayer()) {
+            ballVeloAcr = 0;
+        }
 
-			game.p2Score--;
+        if (speed2 > auxVelMax) {
+            speed2 = auxVelMax;
+        }
 
-			//BallVeloAcr();
-			vx = -speed;
-		}
+        if (x <= 0) {
+            game.p1Score--;
+            //BallVeloAcr();
+            vx = (int) (speed * deltaTime);
+        }
+        else if ((x + size) >= game.getWidth()) {
 
-		if(y <= 0){
-			vy = speed;
-		}
-		else if(y + size >= game.getHeight()){
+            game.p2Score--;
 
-			vy = -speed;
-		}
+            //BallVeloAcr();
+            vx = (int) (-speed * deltaTime);
+        }
 
-		if(game.p1Score>game.p2Score){
-			game.scoreFlag=1;
-			ballFlag=1;
-		}
-		else if(game.p2Score>game.p1Score){
-			game.scoreFlag=2;
-			ballFlag=2;
-		}
-		else{
-			game.scoreFlag=0;
-			ballFlag=0;
-		}
+        if (y <= 0) {
+            vy = (int) (speed * deltaTime);
+        }
+        else if ((y + size) >= game.getHeight()) {
 
+            vy = (int) (-speed * deltaTime);
+        }
 
-		x+= vx;
-		y+= vy;
+        if (game.p1Score > game.p2Score) {
+            game.scoreFlag = 1;
+            ballFlag = 1;
+        }
+        else if (game.p2Score > game.p1Score) {
+            game.scoreFlag = 2;
+            ballFlag = 2;
+        }
+        else {
+            game.scoreFlag = 0;
+            ballFlag = 0;
+        }
 
-		paddleCollide(game);
+        x += vx * deltaTime;
+        y += vy * deltaTime;
 
-	}
+        paddleCollide(game, deltaTime);
 
-	private void paddleCollide(Game game){
+    }
 
+    private void paddleCollide(Game game, Double deltaTime) {
 
-		if(boundingBox.intersects(game.player.getBoundingBox())){
-			BallVeloAcr();
-			aiBug(game);
-			vx = speed;
+        if (boundingBox.intersects(game.player.getBoundingBox())) {
+            BallVeloAcr(deltaTime);
+            aiBug(game);
+            vx = (int) (speed * deltaTime);
 
-		}
-		else if(boundingBox.intersects(game.ai.getBoundingBox())){
-			BallVeloAcr();
-			aiBug(game);
-			vx = -speed;
-		}
-	}
+        }
+        else if (boundingBox.intersects(game.ai.getBoundingBox())) {
+            BallVeloAcr(deltaTime);
+            aiBug(game);
+            vx = (int) (-speed * deltaTime);
+        }
+    }
 
-	public void render(Graphics g){
+    public void render(Graphics g) {
 
-		if(ballFlag==1){
-			g.setColor(Color.cyan);
-			g.fillRect(x, y, size, size);
-		}
-		else if(ballFlag==2){
-			g.setColor(Color.pink);
-			g.fillRect(x, y, size, size);
-		}
-		else{
-			g.setColor(Color.white);
-			g.fillRect(x, y, size, size);
-		}
+        if (ballFlag == 1) {
+            g.setColor(Color.cyan);
+            g.fillRect(x, y, size, size);
+        }
+        else if (ballFlag == 2) {
+            g.setColor(Color.pink);
+            g.fillRect(x, y, size, size);
+        }
+        else {
+            g.setColor(Color.white);
+            g.fillRect(x, y, size, size);
+        }
 
-	}
+    }
 
-	private void BallVeloAcr(){
-		speed2+=ballVeloAcr;
-		speed=(int)speed2;
-	}
-	
-	public void aiBug(Game game){
-		Random aibug = new Random();
-		game.ai.setBug(game.getWidth()/2 - aibug.nextInt(200));
-	}
+    private void BallVeloAcr(Double deltaTime) {
+        speed2 += ballVeloAcr * deltaTime;
+        speed = (int) speed2;
+    }
 
-	public int getSpeed() {
-		return speed;
-	}
+    public void aiBug(Game game) {
+        Random aibug = new Random();
+        game.ai.setBug((game.getWidth() / 2) - aibug.nextInt(200));
+    }
 
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
+    public int getSpeed() {
+        return speed;
+    }
 
-	public double getBallVeloAcr() {
-		return ballVeloAcr;
-	}
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
-	public void setBallVeloAcr(double ballVeloAcr) {
-		this.ballVeloAcr = ballVeloAcr;
-	}
+    public double getBallVeloAcr() {
+        return ballVeloAcr;
+    }
 
-	public double getSpeed2() {
-		return speed2;
-	}
+    public void setBallVeloAcr(double ballVeloAcr) {
+        this.ballVeloAcr = ballVeloAcr;
+    }
 
-	public void setSpeed2(double speed2) {
-		this.speed2 = speed2;
-	}
+    public double getSpeed2() {
+        return speed2;
+    }
 
-	public double getVeloMax() {
-		return veloMax;
-	}
+    public void setSpeed2(double speed2) {
+        this.speed2 = speed2;
+    }
 
-	public void setVeloMax(double veloMax) {
-		this.veloMax = veloMax;
-	}
+    public double getVeloMax() {
+        return veloMax;
+    }
 
-	public int getX() {
-		return x;
-	}
+    public void setVeloMax(double veloMax) {
+        this.veloMax = veloMax;
+    }
 
-	public void setX(int x) {
-		this.x = x;
-	}
+    public int getX() {
+        return x;
+    }
 
-	public int getY() {
-		return y;
-	}
+    public void setX(int x) {
+        this.x = x;
+    }
 
-	public void setY(int y) {
-		this.y = y;
-	}
+    public int getY() {
+        return y;
+    }
 
-	public int getSize() {
-		return size;
-	}
+    public void setY(int y) {
+        this.y = y;
+    }
 
-	public void setSize(int size) {
-		this.size = size;
-	}
+    public int getSize() {
+        return size;
+    }
 
-	public int getVx() {
-		return vx;
-	}
+    public void setSize(int size) {
+        this.size = size;
+    }
 
-	public void setVx(int vx) {
-		this.vx = vx;
-	}
+    public int getVx() {
+        return vx;
+    }
 
-	public int getVy() {
-		return vy;
-	}
+    public void setVx(int vx) {
+        this.vx = vx;
+    }
 
-	public void setVy(int vy) {
-		this.vy = vy;
-	}
+    public int getVy() {
+        return vy;
+    }
 
-	public int getBallFlag() {
-		return ballFlag;
-	}
+    public void setVy(int vy) {
+        this.vy = vy;
+    }
 
-	public void setBallFlag(int ballFlag) {
-		this.ballFlag = ballFlag;
-	}
+    public int getBallFlag() {
+        return ballFlag;
+    }
 
-	public Rectangle getBoundingBox() {
-		return boundingBox;
-	}
+    public void setBallFlag(int ballFlag) {
+        this.ballFlag = ballFlag;
+    }
 
-	public void setBoundingBox(Rectangle boundingBox) {
-		this.boundingBox = boundingBox;
-	}
+    public Rectangle getBoundingBox() {
+        return boundingBox;
+    }
+
+    public void setBoundingBox(Rectangle boundingBox) {
+        this.boundingBox = boundingBox;
+    }
 
 }

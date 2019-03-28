@@ -5,85 +5,84 @@ import java.awt.event.KeyListener;
 
 import view.MainMenu;
 
-public class InputHandler implements KeyListener  {
-	Game game;
-	
-	public InputHandler(Game game) {
-		this.game = game;
-	}
+public class InputHandler implements KeyListener {
+    Game game;
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		
-		//player 1
-		if(keyCode == KeyEvent.VK_W){
+    public InputHandler(Game game) {
+        this.game = game;
+    }
 
-			game.player.setGoingUp(true);
-			
-		}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
 
-		if(keyCode == KeyEvent.VK_S){
+        //player 1 
+        if (keyCode == KeyEvent.VK_W) {
 
-			game.player.setGoingDown(true);
-		}
-		
-		//player 2
-		if(keyCode == KeyEvent.VK_UP){
+            game.player.setGoingUp(true);
 
-			game.ai.setGoingUp(true);
-		}
+        }
 
-		if(keyCode == KeyEvent.VK_DOWN){
+        if (keyCode == KeyEvent.VK_S) {
 
-			game.ai.setGoingDown(true);
-		}
-		
-		//other controls
-		
-		if(keyCode == KeyEvent.VK_ESCAPE){
-			game.setGameRunning(false);
-			game.music.pararSom();
-			game.frame.dispose();
-			game.image.flush();
-			
-			new MainMenu();
-		}
-	}
+            game.player.setGoingDown(true);
+        }
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		
-		//player 1
-		if(keyCode == KeyEvent.VK_W){
+        //player 2
+        if (keyCode == KeyEvent.VK_UP) {
 
-			game.player.setGoingUp(false);
-		}
+            game.ai.setGoingUp(true);
+        }
 
-		if(keyCode == KeyEvent.VK_S){
+        if (keyCode == KeyEvent.VK_DOWN) {
 
-			game.player.setGoingDown(false);
-		}
-		
-		
-		//player 2
-		if(keyCode == KeyEvent.VK_UP){
+            game.ai.setGoingDown(true);
+        }
 
-			game.ai.setGoingUp(false);
-		}
+        //other controls
 
-		if(keyCode == KeyEvent.VK_DOWN){
+        if (keyCode == KeyEvent.VK_ESCAPE) {
+            game.setGameRunning(false);
+            game.music.pararSom();
+            game.frame.dispose();
+            game.image.flush();
 
-			game.ai.setGoingDown(false);
-		}
+            new MainMenu();
+        }
+    }
 
-	}
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int keyCode = e.getKeyCode();
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+        //player 1
+        if (keyCode == KeyEvent.VK_W) {
+
+            game.player.setGoingUp(false);
+        }
+
+        if (keyCode == KeyEvent.VK_S) {
+
+            game.player.setGoingDown(false);
+        }
+
+        //player 2
+        if (keyCode == KeyEvent.VK_UP) {
+
+            game.ai.setGoingUp(false);
+        }
+
+        if (keyCode == KeyEvent.VK_DOWN) {
+
+            game.ai.setGoingDown(false);
+        }
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
