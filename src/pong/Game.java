@@ -28,6 +28,8 @@ public class Game extends Canvas implements Runnable {
     int p1Score;
     int p2Score;
 
+    double baseSpeed = 1.5;
+
     String ganhador;
 
     public PlayerPaddle player;
@@ -43,7 +45,12 @@ public class Game extends Canvas implements Runnable {
     SoundSystem music = new SoundSystem("/resourses/whatIsLove.wav");
     InputHandler IH;
 
+    public boolean hasRightScored = false;
+    public boolean hasLefttScored = false;
+
     BufferedImage image = new BufferedImage(LARGURA, ALTURA, BufferedImage.TYPE_INT_RGB);
+
+    Thread gameThread;
 
     public Game() {
         p1Score = p2Score = maxScore;
@@ -83,8 +90,11 @@ public class Game extends Canvas implements Runnable {
                 lastLoopTime = now;
                 double delta = updateLength / ((double) OPTIMAL_TIME);
 
+                delta = (delta == 0 ? delta + 0.2 : delta) * baseSpeed;
+
                 tick(delta);
                 render();
+
                 Thread.sleep(((lastLoopTime - System.nanoTime()) + OPTIMAL_TIME) / 1000000);
             }
             catch (Throwable e) {
@@ -103,7 +113,8 @@ public class Game extends Canvas implements Runnable {
 
     public synchronized void start() {
         gameRunning = true;
-        new Thread(this).start();
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     public synchronized void stop() throws Throwable {
@@ -121,7 +132,7 @@ public class Game extends Canvas implements Runnable {
         player.tick(this, deltaTime);
         ai.tick(this, deltaTime);
         ball.tick(this, deltaTime);
-
+        scoreHandler();
         endGame();
     }
 
@@ -170,7 +181,56 @@ public class Game extends Canvas implements Runnable {
 
     }
 
-    public void endGame() throws Throwable {
+    private void scoreHandler() {
+        if (hasLefttScored || hasRightScored) {
+
+            if (hasLefttScored) {
+                p2Score--;
+                hasLefttScored = false;
+            }
+
+            if (hasRightScored) {
+                p1Score--;
+                hasRightScored = false;
+            }
+
+            if (p1Score > p2Score) {
+                scoreFlag = 1;
+                ball.setBallFlag(1);
+            }
+            else if (p2Score > p1Score) {
+                scoreFlag = 2;
+                ball.setBallFlag(2);
+            }
+            else {
+                scoreFlag = 0;
+                ball.setBallFlag(0);
+            }
+
+            resetGame();
+        }
+    }
+
+    private void resetGame() {
+        ball.setX(getWidth() / 2);
+        ball.setY((getHeight() / 2) - 40);
+
+        player.setX(10);
+        player.setY((getHeight() / 2) - 40);
+
+        ai.setX(getWidth() - 25);
+        ai.setY((getHeight() / 2) - 40);
+
+        try {
+            gameThread.wait(1000);
+        }
+        catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void endGame() throws Throwable {
 
         if ((p1Score == 0) || (p2Score == 0)) {
             if (p1Score == 0) {

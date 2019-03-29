@@ -9,12 +9,12 @@ public class Ball {
 
     private int x, y;
     private int size = 10;
-    private int speed = 2;
+    private double speed = 2;
     private double ballVeloAcr = 0.3;
     private double speed2 = 2;
     private double veloMax = 5;
-    private int vx;
-    private int vy;
+    private double vx;
+    private double vy;
 
     private int ballFlag = 0;
 
@@ -45,41 +45,31 @@ public class Ball {
         }
 
         if (x <= 0) {
-            game.p1Score--;
-            //BallVeloAcr();
-            vx = (int) (speed * deltaTime);
+            game.hasRightScored = true;
+            BallVeloAcr(deltaTime);
+            vx = (speed * deltaTime);
         }
         else if ((x + size) >= game.getWidth()) {
-
-            game.p2Score--;
-
-            //BallVeloAcr();
-            vx = (int) (-speed * deltaTime);
+            game.hasLefttScored = true;
+            BallVeloAcr(deltaTime);
+            vx = (-speed * deltaTime);
         }
 
         if (y <= 0) {
-            vy = (int) (speed * deltaTime);
+            vy = (speed * deltaTime);
         }
         else if ((y + size) >= game.getHeight()) {
 
-            vy = (int) (-speed * deltaTime);
+            vy = (-speed * deltaTime);
         }
 
-        if (game.p1Score > game.p2Score) {
-            game.scoreFlag = 1;
-            ballFlag = 1;
-        }
-        else if (game.p2Score > game.p1Score) {
-            game.scoreFlag = 2;
-            ballFlag = 2;
-        }
-        else {
-            game.scoreFlag = 0;
-            ballFlag = 0;
-        }
+        vx = vx == 0 ? vx + 1 : vx;
+        vy = vy == 0 ? vy + 1 : vy;
 
         x += vx * deltaTime;
         y += vy * deltaTime;
+
+        System.out.println("ball y: " + y + " || ball vy: " + vy);
 
         paddleCollide(game, deltaTime);
 
@@ -127,7 +117,7 @@ public class Ball {
         game.ai.setBug((game.getWidth() / 2) - aibug.nextInt(200));
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
@@ -183,7 +173,7 @@ public class Ball {
         this.size = size;
     }
 
-    public int getVx() {
+    public double getVx() {
         return vx;
     }
 
@@ -191,7 +181,7 @@ public class Ball {
         this.vx = vx;
     }
 
-    public int getVy() {
+    public double getVy() {
         return vy;
     }
 
