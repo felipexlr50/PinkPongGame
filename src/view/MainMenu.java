@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import pong.Game;
+import core.Game;
 import resourses.SoundSystem;
 
 public class MainMenu extends JFrame {
@@ -33,7 +33,7 @@ public class MainMenu extends JFrame {
 
     public MainMenu() {
         super("Pink Pong v1.5 2015 by Felipe M B");
-        //music.loopSom();
+        music.loopSom();
 
         setLayout(new BorderLayout());
         fundo = new JLabel(new ImageIcon(getClass().getResource("/resourses/pinkPong_bg.png")));
@@ -103,16 +103,8 @@ public class MainMenu extends JFrame {
             music.pararSom();
             dispose();
             Game game = new Game();
-
-            if (chave.isSelected()) {
-                game.ai.setTwoPlayer(true);
-            }
-            else {
-                game.ai.setTwoPlayer(false);
-            }
-
+            game.getAi().setTwoPlayer(chave.isSelected() ? true : false);
             game.start();
-
         });
 
         sair.addActionListener(e -> System.exit(0));
